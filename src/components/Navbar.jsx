@@ -13,7 +13,7 @@ function Navbar() {
           <Link to="/cartographie" className="flex items-center text-gray-700 hover:text-orange-500 transition">
             <MapPin className="h-4 w-4 mr-1" /> Carte
           </Link>
-          <Link to="/meteo-sante" className="flex items-center text-gray-700 hover:text-orange-500 transition">
+          <Link to="/meteosante" className="flex items-center text-gray-700 hover:text-orange-500 transition">
             <Thermometer className="h-4 w-4 mr-1" /> Météo-Santé
           </Link>
           <Link to="/about" className="flex items-center text-gray-700 hover:text-orange-500 transition">
