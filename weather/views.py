@@ -11,7 +11,7 @@ from .serializers import RegionSerializer, WeatherDataSerializer, WeatherAlertSe
 class RegionListView(generics.ListAPIView):
     queryset = Region.objects.filter(is_active=True)
     serializer_class = RegionSerializer
-    permission_classes = [AllowAny]
+    permission_classes = []  # Accès public pour la liste des régions
 
 @api_view(['GET'])
 @permission_classes([AllowAny])

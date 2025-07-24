@@ -6,6 +6,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/auth/', include('accounts.urls')),
+    path('api/users/', include('accounts.urls')),  # Même chose que auth pour compatibilité
     path('api/weather/', include('weather.urls')),
     path('api/alerts/', include('alerts.urls')),
     path('api/health-structures/', include('health_structures.urls')),

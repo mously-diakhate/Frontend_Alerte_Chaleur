@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from rest_framework_simplejwt.views import TokenRefreshView
 from . import views
 
@@ -9,4 +9,7 @@ urlpatterns = [
     path('logout/', views.logout, name='logout'),
     path('profile/', views.UserProfileView.as_view(), name='profile'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    
+    # URLs d'administration des utilisateurs
+    path('admin/', include('accounts.admin_urls')),
 ]

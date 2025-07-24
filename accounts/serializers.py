@@ -38,13 +38,10 @@ class UserLoginSerializer(serializers.Serializer):
                 raise serializers.ValidationError('Identifiants invalides.')
             if not user.is_active:
                 raise serializers.ValidationError('Compte désactivé.')
-            if user.is_admin or user.is_staff or user.is_superuser:
-                raise serializers.ValidationError("Accès refusé : utilisez la page de connexion administrateur.")
             attrs['user'] = user
             return attrs
         else:
             raise serializers.ValidationError('Email et mot de passe requis.')
-
 
 class AdminLoginSerializer(serializers.Serializer):
     username = serializers.CharField()

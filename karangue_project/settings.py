@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'admin_dashboard',
     'bulletins',
     'reports',
+    
 ]
 
 MIDDLEWARE = [
