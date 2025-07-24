@@ -1,14 +1,12 @@
-import { Link, Outlet, useNavigate } from "react-router-dom";
-import { LayoutDashboard, Users, AlertTriangle, FileText, BarChart3, LogOut } from "lucide-react";
+import { Link, Outlet, Navigate } from "react-router-dom";
+import { LayoutDashboard, Users, AlertTriangle, FileText, BarChart3 } from "lucide-react";
 import LogoutButton from "../components/LogoutButton";
 
 export default function AdminLayout() {
-  const navigate = useNavigate();
+  const isAdmin = localStorage.getItem("admin");
 
-  // Check if admin is logged in, else redirect to login
-  if (!localStorage.getItem("admin")) {
-    navigate("/admin/login");
-    return null;
+  if (!isAdmin) {
+    return <Navigate to="/login" replace />;
   }
 
   return (

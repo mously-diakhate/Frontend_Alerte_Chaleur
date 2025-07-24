@@ -1,18 +1,76 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { Thermometer } from "lucide-react";
+"use client"
+
+import { useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
+import { Thermometer } from "lucide-react"
+import { useAuth } from "../hooks/useAuth"
 
 function RegisterPage() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [situation, setSituation] = useState("");
+  const [formData, setFormData] = useState({
+    full_name: "",
+    username: "",
+    email: "",
+    password: "",
+    password_confirm: "",
+    situation: "",
+    region: "",
+    phone_number: "",
+  })
+  const [error, setError] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Nom:", name, "Email:", email, "Mot de passe:", password, "Situation:", situation);
-    // Ici, tu ajoutes la logique d'inscription
-  };
+  const navigate = useNavigate()
+  const { register } = useAuth()
+
+  const regions = [
+    "Dakar",
+    "Thiès",
+    "Saint-Louis",
+    "Diourbel",
+    "Kaolack",
+    "Fatick",
+    "Kaffrine",
+    "Louga",
+    "Matam",
+    "Tambacounda",
+    "Kédougou",
+    "Kolda",
+    "Sédhiou",
+    "Ziguinchor",
+  ]
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    })
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setError("")
+
+    if (formData.password !== formData.password_confirm) {
+      setError("Les mots de passe ne correspondent pas")
+      return
+    }
+
+    setIsLoading(true)
+
+    try {
+      await register(formData)
+      navigate("/meteosante")
+    } catch (err) {
+      const errorMessage =
+        err.response?.data?.email?.[0] ||
+        err.response?.data?.username?.[0] ||
+        err.response?.data?.password?.[0] ||
+        "Erreur lors de l'inscription. Veuillez réessayer."
+      setError(errorMessage)
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-100 to-red-200 flex items-center justify-center px-4 pt-20">
@@ -33,48 +91,133 @@ function RegisterPage() {
         <p className="text-gray-500 mb-6 relative z-10">Plateforme KARANGUE</p>
 
         <form onSubmit={handleSubmit} className="space-y-4 text-left relative z-10">
+          {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+
           <div>
-            <label htmlFor="name" className="block text-gray-600 mb-1">Nom complet</label>
+            <label htmlFor="full_name" className="block text-gray-600 mb-1">
+              Nom complet
+            </label>
             <input
               type="text"
-              id="name"
-              placeholder="Votre nom"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              id="full_name"
+              name="full_name"
+              placeholder="Votre nom complet"
+              value={formData.full_name}
+              onChange={handleChange}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400"
               required
             />
           </div>
+
           <div>
-            <label htmlFor="email" className="block text-gray-600 mb-1">Email</label>
+            <label htmlFor="username" className="block text-gray-600 mb-1">
+              Nom d'utilisateur
+            </label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              placeholder="nom_utilisateur"
+              value={formData.username}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400"
+              required
+            />
+          </div>
+
+          <div>
+            <label htmlFor="email" className="block text-gray-600 mb-1">
+              Email
+            </label>
             <input
               type="email"
               id="email"
+              name="email"
               placeholder="exemple@domaine.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={formData.email}
+              onChange={handleChange}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400"
               required
             />
           </div>
+
           <div>
-            <label htmlFor="password" className="block text-gray-600 mb-1">Mot de passe</label>
+            <label htmlFor="password" className="block text-gray-600 mb-1">
+              Mot de passe
+            </label>
             <input
               type="password"
               id="password"
+              name="password"
               placeholder="Choisissez un mot de passe"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={formData.password}
+              onChange={handleChange}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400"
               required
             />
           </div>
+
           <div>
-            <label htmlFor="situation" className="block text-gray-600 mb-1">Situation</label>
+            <label htmlFor="password_confirm" className="block text-gray-600 mb-1">
+              Confirmer le mot de passe
+            </label>
+            <input
+              type="password"
+              id="password_confirm"
+              name="password_confirm"
+              placeholder="Confirmez votre mot de passe"
+              value={formData.password_confirm}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400"
+              required
+            />
+          </div>
+
+          <div>
+            <label htmlFor="region" className="block text-gray-600 mb-1">
+              Région
+            </label>
+            <select
+              id="region"
+              name="region"
+              value={formData.region}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400"
+              required
+            >
+              <option value="">Sélectionnez votre région</option>
+              {regions.map((region) => (
+                <option key={region} value={region}>
+                  {region}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label htmlFor="phone_number" className="block text-gray-600 mb-1">
+              Téléphone (optionnel)
+            </label>
+            <input
+              type="tel"
+              id="phone_number"
+              name="phone_number"
+              placeholder="+221 XX XXX XX XX"
+              value={formData.phone_number}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="situation" className="block text-gray-600 mb-1">
+              Situation
+            </label>
             <select
               id="situation"
-              value={situation}
-              onChange={(e) => setSituation(e.target.value)}
+              name="situation"
+              value={formData.situation}
+              onChange={handleChange}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400"
               required
             >
@@ -89,19 +232,22 @@ function RegisterPage() {
 
           <button
             type="submit"
-            className="w-full py-2 rounded-lg text-white font-semibold bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 transition shadow-lg"
+            disabled={isLoading}
+            className="w-full py-2 rounded-lg text-white font-semibold bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 transition shadow-lg disabled:opacity-50"
           >
-            S'inscrire
+            {isLoading ? "Inscription..." : "S'inscrire"}
           </button>
         </form>
 
         <p className="mt-6 text-gray-600 text-sm relative z-10">
           Vous avez déjà un compte ?{" "}
-          <Link to="/login" className="text-orange-500 hover:underline">Se connecter</Link>
+          <Link to="/login" className="text-orange-500 hover:underline">
+            Se connecter
+          </Link>
         </p>
       </div>
     </div>
-  );
+  )
 }
 
-export default RegisterPage;
+export default RegisterPage

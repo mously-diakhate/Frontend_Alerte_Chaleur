@@ -1,4 +1,6 @@
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+
+import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
+
 import { useEffect } from "react";
 
 import Navbar from "./components/Navbar";
@@ -15,6 +17,7 @@ import AdminAlerts from "./admin/AdminAlerts";
 import AdminBulletins from "./admin/AdminBulletins";
 import AdminStatistics from "./admin/AdminStatistics";
 import About from "./pages/About";
+import AlertPage from "./pages/Alert";
 import "leaflet/dist/leaflet.css";
 
 function AppContent() {
@@ -35,16 +38,19 @@ function AppContent() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/cartographie" element={<CartographiePage />} />
           <Route path="/meteosante" element={<MeteoSantePage />} />
-           <Route path="/about" element={<About />} /> 
+          <Route path="/about" element={<About />} /> 
+          <Route path="/alertes" element={<AlertPage />} />
 
           {/* Admin section */}
           <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<Navigate to="dashboard" replace />} /> {/* 👈 AJOUT OBLIGATOIRE */}
             <Route path="dashboard" element={<AdminDashboard />} />
             <Route path="users" element={<AdminUsers />} />
             <Route path="alerts" element={<AdminAlerts />} />
             <Route path="bulletins" element={<AdminBulletins />} />
             <Route path="statistics" element={<AdminStatistics />} />
           </Route>
+
         </Routes>
         {!isAdminRoute && <Footer />}
       </div>

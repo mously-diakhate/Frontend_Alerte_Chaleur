@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Thermometer, MapPin, Users, Shield, Info } from "lucide-react";
+import { Thermometer, MapPin, Users, Shield, Info, AlertTriangle } from "lucide-react";
 
 function Navbar() {
   return (
@@ -15,6 +15,9 @@ function Navbar() {
           </Link>
           <Link to="/meteosante" className="flex items-center text-gray-700 hover:text-orange-500 transition">
             <Thermometer className="h-4 w-4 mr-1" /> Météo-Santé
+          </Link>
+          <Link to="/alertes" className="flex items-center text-gray-700 hover:text-orange-500 transition">
+            <AlertTriangle className="h-4 w-4 mr-1" /> Alertes
           </Link>
           <Link to="/about" className="flex items-center text-gray-700 hover:text-orange-500 transition">
             <Info className="h-4 w-4 mr-1" /> À propos
