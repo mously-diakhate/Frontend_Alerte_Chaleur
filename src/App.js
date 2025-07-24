@@ -12,9 +12,9 @@ import CartographiePage from "./pages/cartographie";
 import MeteoSantePage from "./pages/meteosante";
 import AdminLayout from "./admin/AdminLayout";
 import AdminDashboard from "./admin/AdminDashboard";
-import AdminUsers from "./admin/AdminUsers";
-import AdminAlerts from "./admin/AdminAlerts";
-import AdminBulletins from "./admin/AdminBulletins";
+import AdminUsersDashboard from "./admin/admin-users-dashboard";
+import AdminAlertsDashboardConnected from './admin/admin-alerts-dashboard-connected'
+import BulletinDashboard from "./admin/bulletin-dashboard";
 import AdminStatistics from "./admin/AdminStatistics";
 import About from "./pages/About";
 import AlertPage from "./pages/Alert";
@@ -45,9 +45,9 @@ function AppContent() {
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<Navigate to="dashboard" replace />} /> {/* 👈 AJOUT OBLIGATOIRE */}
             <Route path="dashboard" element={<AdminDashboard />} />
-            <Route path="users" element={<AdminUsers />} />
-            <Route path="alerts" element={<AdminAlerts />} />
-            <Route path="bulletins" element={<AdminBulletins />} />
+            <Route path="users" element={<AdminUsersDashboard />} />
+            <Route path="alerts" element={<AdminAlertsDashboardConnected />} />
+            <Route path="bulletins" element={<BulletinDashboard />} />
             <Route path="statistics" element={<AdminStatistics />} />
           </Route>
 
